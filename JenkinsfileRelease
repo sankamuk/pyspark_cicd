@@ -1,12 +1,7 @@
 pipeline {
   agent any
   
-  triggers {
-    pollSCM("10 23 * * *")
-  }
-
   options {
-    skipDefaultCheckout(true)
     buildDiscarder(logRotator(numToKeepStr: '5'))
     timestamps()
   }
