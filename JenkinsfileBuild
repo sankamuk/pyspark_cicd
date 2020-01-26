@@ -1,0 +1,85 @@
+pipeline {
+  agent any
+  
+  triggers {
+    pollSCM("10 23 * * *")
+  }
+
+  options {
+    skipDefaultCheckout(true)
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+    timestamps()
+  }
+
+  stages {
+    stage('Pull Code'){
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build Virtual Environment'){
+      steps {
+        sh '''
+           python3 -m venv venv
+           source venv/bin/activate
+           pip install -r requirement.txt
+        '''
+      }
+    }
+
+    stage('Unit Test'){
+      steps {
+        sh '''
+           source venv/bin/activate
+           cd test
+           pytest --disable-pytest-warnings -v --junitxml="result.xml" --cov=../src/jobs --cov-report html
+        '''
+      }
+    }
+
+    stage('Build'){
+      steps {
+        sh '''
+           source venv/bin/activate
+           cd src
+           python setup.py sdist bdist_wheel
+        '''
+      }
+    }
+
+  }
+
+  post {
+    success {
+      echo "- Success build. Uploading."
+      sh '''
+        source venv/bin/activate
+        python -m twine upload -r local --skip-existing src/dist/*.whl
+      '''
+      junit 'test/*.xml'
+      publishHTML (target: [
+        allowMissing: false,
+        alwaysLinkToLastBuild: false,
+        keepAll: true,
+        reportDir: 'test/htmlcov',
+        reportFiles: 'index.html',
+        reportName: "Coverage"
+      ])
+    }
+    
+    failure {
+      echo "- Failed build."
+      /*
+      mail bcc: '', body: '''<p>FAILED: Job \'${env.JOB_NAME} [${env.BUILD_NUMBER}]\':</p>
+<p>Check console output at &QUOT;<a href=\'${env.BUILD_URL}\'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>''', cc: '', from: '', replyTo: '', subject: 'FAILED: Job \'${env.JOB_NAME} [${env.BUILD_NUMBER}]\'', to: 'emailid@mail.com'
+      */
+    }
+
+    cleanup {
+      echo "- Cleanup action."
+    }
+
+  } 
+
+}

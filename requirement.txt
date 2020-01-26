@@ -1,0 +1,6 @@
+pyspark
+pytest
+pytest-cov
+setuptools
+wheel
+twine
