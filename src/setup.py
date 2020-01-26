@@ -5,7 +5,7 @@ with open("../README.md", "r") as fh:
 
 setuptools.setup(
     name="pyspark_cicd", 
-    version="1.1.0",
+    version="1.2.0-SNAPSHOT",
     author="Sankar Mukherjee",
     author_email="sanmuk21@gmail.com",
     description="PySpark CICD Project",
