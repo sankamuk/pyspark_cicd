@@ -77,7 +77,7 @@ EOF
 
 - Setup Remote Git Repository Credential
 
-User [LINK|https://jenkins.io/doc/book/using/using-credentials/#adding-new-global-credentials] to setup your credential with name ***Github***.
+Use [LINK](https://jenkins.io/doc/book/using/using-credentials/#adding-new-global-credentials) to setup your credential with name ***Github*** in Jenkins.
 
 > Above commands are for Debian host, checkout in Internet for your platform specific commands.
 
