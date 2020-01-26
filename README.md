@@ -79,6 +79,15 @@ EOF
 
 Use [LINK](https://jenkins.io/doc/book/using/using-credentials/#adding-new-global-credentials) to setup your credential with name ***Github*** in Jenkins.
 
+- Jenkins Pipeline Bash Support
+
+Since the Build and Release pipeline heavily uses BASH syntax for its ***sh*** operations, make your Jenkins host sh link to BASH.
+
+```
+$ sudo rm /bin/sh
+$ sudo ln -s /bin/bash /bin/sh
+```
+
 > Above commands are for Debian host, checkout in Internet for your platform specific commands.
 
 ### Build
@@ -94,6 +103,11 @@ Release Jenkins Pipeline job can be scheduled by creating a Jenkins Pipeline wit
 ## Usage 
 
 Below are the way to use the project:
+
+### Prerequesite
+
+Before you start using update the setup.py to reflect your Application details.
+
 
 ### Manual Testing
 
@@ -132,9 +146,13 @@ ${SPARK_HOME}/bin/spark-submit app.py --job wordcount --job-args srctype=json sr
 ### Oozie Job Deployment
 
 
+- TODO
+
 
 ### Airflow Job Deployment
 
+
+- TODO
 
 
 ## Acknowledgements and Further Reading
