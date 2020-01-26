@@ -11,7 +11,8 @@ Today setting up an CICD enabled PySpark project is not always a simple task. Be
 
 - Spark and Spark SQL batch module development supported project.
 - Multi Module PySpark Application, reduces the number of project created and groups module under an application.
-- Unit Test modules.
+- Unit Test support.
+- Test Result and Coverage Report support.
 - Setup tools to push project to PIP repository. Help you to use PySpark module in any application.
 - Two Jenkins Pipeline (Declarative) for Build (SNAPSHOT) and Release.
 - Oozie based job deployment support. Shell Action script and Workflow xml provided.
@@ -29,11 +30,65 @@ Today setting up an CICD enabled PySpark project is not always a simple task. Be
 
 Below are the requirement to build and release.
 
+### Prerequesite
+
+Note before you create Jenkins Jobs for your Build and Release of this project you should setup your Jenkins Build host with below requiements.
+
+- Install Python3
+
+```
+$ sudo apt-get install python3
+```
+
+- Install Python Pip
+
+```
+$ sudo apt-get install python3-pip
+```
+
+- Install Python Virtual Environment support
+
+```
+$ sudo apt-get install python3-venv
+```
+
+- Setup Pip Repository definition file
+
+Below setup consider you have running Pip Repository at *http://192.168.0.44:8880* with user *admin* and password *admin*.
+If you want to quickly setup an dedicated Pip Repository for this project follow LINK.
+
+```
+$ cat > ~/.pypirc <<EOF
+[distutils]
+index-servers =
+  pypi
+  local
+
+[pypi]
+username:
+password: 
+
+[local]
+repository: http://192.168.0.44:8880
+username: admin
+password: admin
+EOF
+```
+
+- Setup Remote Git Repository Credential
+
+User [LINK|https://jenkins.io/doc/book/using/using-credentials/#adding-new-global-credentials] to setup your credential with name ***Github***.
+
+> Above commands are for Debian host, checkout in Internet for your platform specific commands.
+
 ### Build
+
+Daily SCM Polled Snapshot build Jenkins Pipeline job can be scheduled by creating a Jenkins Pipeline with GIT SCM with Decrative script ***JenkinsfileBuild***. 
 
 
 ### Release
 
+Release Jenkins Pipeline job can be scheduled by creating a Jenkins Pipeline with GIT SCM with Decrative script ***JenkinsfileRelease***. 
 
 
 ## Usage 
